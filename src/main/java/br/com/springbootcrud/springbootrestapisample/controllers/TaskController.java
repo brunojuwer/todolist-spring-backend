@@ -14,6 +14,7 @@ public class TaskController {
     @Autowired
     private TaskRepository taskRepository;
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping(value = "save")
     @ResponseBody
     public ResponseEntity<Task> save(@RequestBody Task task) {
@@ -22,7 +23,8 @@ public class TaskController {
         return new ResponseEntity<Task>(newTask, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "listalltasks")
+    @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping(value = "tasks")
     @ResponseBody
     public ResponseEntity<List<Task>> listTask() {
 
@@ -30,6 +32,7 @@ public class TaskController {
         return new ResponseEntity<List<Task>>(tasks, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping(value = "delete")
     @ResponseBody
     public ResponseEntity<String> delete(@RequestParam Long idTask) {
@@ -39,12 +42,13 @@ public class TaskController {
         return new ResponseEntity<String>("Task successfully deleted", HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @PutMapping(value = "update")
     @ResponseBody
     public ResponseEntity<String> update(@RequestParam Long idTask) {
         Task getTask = taskRepository.getReferenceById(idTask);
         getTask.setTaskComplete(!getTask.isTaskComplete());
-        
+
         taskRepository.save(getTask);
 
         return new ResponseEntity<String>("Task successfully updated", HttpStatus.OK);

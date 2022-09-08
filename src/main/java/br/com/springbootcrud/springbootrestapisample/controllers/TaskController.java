@@ -28,7 +28,7 @@ public class TaskController {
     @ResponseBody
     public ResponseEntity<List<Task>> listTask() {
 
-        List<Task> tasks = taskRepository.findAll();
+        List<Task> tasks = taskRepository.selectAllTasks();
         return new ResponseEntity<List<Task>>(tasks, HttpStatus.OK);
     }
 
@@ -42,14 +42,14 @@ public class TaskController {
         return new ResponseEntity<String>("Task successfully deleted", HttpStatus.OK);
     }
 
+
     @CrossOrigin(origins = "http://localhost:5173")
     @PutMapping(value = "update")
     @ResponseBody
     public ResponseEntity<String> update(@RequestParam Long idTask) {
         Task getTask = taskRepository.getReferenceById(idTask);
-        getTask.setTaskComplete(!getTask.isTaskComplete());
+        taskRepository.updateIsComplete(idTask, !getTask.isTaskComplete());
 
-        taskRepository.save(getTask);
 
         return new ResponseEntity<String>("Task successfully updated", HttpStatus.OK);
     }

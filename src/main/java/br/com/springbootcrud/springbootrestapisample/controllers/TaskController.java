@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
 
     @Autowired
     private TaskRepository taskRepository;
 
     @CrossOrigin(origins = "http://localhost:5173")
-    @PostMapping(value = "save")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<Task> save(@RequestBody Task task) {
 
@@ -24,7 +25,7 @@ public class TaskController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173")
-    @GetMapping(value = "tasks")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<List<Task>> listTask() {
 
@@ -33,7 +34,7 @@ public class TaskController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173")
-    @DeleteMapping(value = "delete")
+    @DeleteMapping
     @ResponseBody
     public ResponseEntity<String> delete(@RequestParam Long idTask) {
 
@@ -44,7 +45,7 @@ public class TaskController {
 
 
     @CrossOrigin(origins = "http://localhost:5173")
-    @PutMapping(value = "update")
+    @PutMapping
     @ResponseBody
     public ResponseEntity<String> update(@RequestParam Long idTask) {
         Task getTask = taskRepository.getReferenceById(idTask);

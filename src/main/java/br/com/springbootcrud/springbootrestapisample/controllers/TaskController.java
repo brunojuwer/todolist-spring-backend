@@ -1,6 +1,8 @@
 package br.com.springbootcrud.springbootrestapisample.controllers;
 import br.com.springbootcrud.springbootrestapisample.model.Task;
 import br.com.springbootcrud.springbootrestapisample.repository.TaskRepository;
+import br.com.springbootcrud.springbootrestapisample.service.TaskService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +19,15 @@ public class TaskController {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private TaskService taskService;
+
     @PostMapping
     @ResponseBody
     public ResponseEntity<Task> save(@RequestBody Task task) {
 
-        Task newTask = taskRepository.save(task);
-        return new ResponseEntity<Task>(newTask, HttpStatus.CREATED);
+        Task newTask = taskService.save(task);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
     }
 
     @GetMapping
@@ -35,19 +40,17 @@ public class TaskController {
 
     @DeleteMapping("/{idTask}")
     @ResponseBody
-    public ResponseEntity<String> delete(@PathVariable Long idTask) {
+    public ResponseEntity<?> delete(@PathVariable Long idTask) {
 
-        taskRepository.deleteById(idTask);
-
-        return new ResponseEntity<String>("Task successfully deleted", HttpStatus.OK);
+        taskService.delete(idTask);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{idTask}")
     @ResponseBody
-    public ResponseEntity<String> update(@PathVariable Long idTask) {
-        Task getTask = taskRepository.getReferenceById(idTask);
-        taskRepository.updateIsComplete(idTask, !getTask.isTaskComplete());
-
-        return new ResponseEntity<String>("Task successfully updated", HttpStatus.OK);
+    public ResponseEntity<Task> update(@PathVariable Long idTask) {
+        
+        Task task = taskService.update(idTask);
+        return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 }

@@ -13,10 +13,11 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
+    @Deprecated
     @Transactional
     @Modifying
     @Query("UPDATE Task SET isTaskComplete = :isComplete WHERE id = :idTask")
-    void updateIsComplete(@Param(value = "idTask") long idTask, @Param(value = "isComplete") boolean isComplete);
+    Task updateTask(@Param(value = "idTask") long idTask, @Param(value = "isComplete") boolean isComplete);
 
     @Query(value = "SELECT t FROM Task t ORDER BY t.created_at ASC")
     List<Task> selectAllTasks();
